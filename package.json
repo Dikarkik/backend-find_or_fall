@@ -1,0 +1,22 @@
+{
+  "name": "backend-find_or_fall",
+  "version": "1.0.0",
+  "description": "game server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KaroDev3/backend-find_or_fall.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KaroDev3/backend-find_or_fall/issues"
+  },
+  "homepage": "https://github.com/KaroDev3/backend-find_or_fall#readme",
+  "dependencies": {
+    "socket.io": "^2.3.0"
+  }
+}
