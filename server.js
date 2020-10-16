@@ -1,4 +1,5 @@
 var io = require('socket.io')(3333);
+const generateBoard = require('./generate_board').generateBoard;
 
 console.log('Server listening on port 3333...');
 
@@ -29,6 +30,7 @@ io.sockets.on('connection', function (socket) {
     let roomID = `${room.player1_socket.id}-AND-${socket.id}`;
     room.id = roomID;
     room.player2_socket = socket;
+    room.board = generateBoard();
 
     // useful data
     room.player1_socket['room'] = room;
