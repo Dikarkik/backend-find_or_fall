@@ -1,20 +1,12 @@
 var io = require('socket.io')(3333);
 const generateBoard = require('./generate_board').generateBoard;
+const getOpponentId = require('./get_opponent_id').getOpponentId;
+const Room = require('./room').Room;
 
 console.log('Server listening on port 3333...');
 
 let ROOM_LIST = {}; // key: <id1>-AND-<id2>, value: <Room object>
-let room = null; // will be <Room object>
-
-var Room = function (player1_socket) {
-  var self = {
-    id: null,
-    player1_socket: player1_socket,
-    player2_socket: null,
-    board: null,
-  }
-  return self;
-};
+let room = null; // will be 'Room' object
 
 io.sockets.on('connection', function (socket) {
   console.log('socket connected: ' + socket.id);
@@ -32,12 +24,12 @@ io.sockets.on('connection', function (socket) {
     room.player2_socket = socket;
     room.board = generateBoard();
 
-    // useful data
-    room.player1_socket['room'] = room;
-    room.player2_socket['room'] = room;
-
     // save room in ROOM_LIST
     ROOM_LIST[roomID] = room;
+
+    // save room id in both sockets
+    room.player1_socket['room'] = room;
+    room.player2_socket['room'] = room;
 
     // frees 'room'
     room = null;
@@ -52,29 +44,25 @@ io.sockets.on('connection', function (socket) {
     io.to(ROOM_LIST[roomID].player2_socket.id).emit('start game', data);
   }
 
-  socket.on('disconnecting', (reason) => {
+  socket.on('disconnect', function () {
+    console.log('socket disconnected');
+    console.log('SOCKETS NOW:');
+    console.log(Object.keys(io.sockets.sockets));
     // If this player is on matchmaking
     if (room && socket.id === room.player1_socket.id)
       room = null;
     // If this player is on match. Notify disconnection to opponent
     if ('room' in socket) {
-      if (socket.id === socket.room.player1_socket.id)
-        socket_opponent = socket.room.player2_socket;
-      else
-        socket_opponent = socket.room.player1_socket;
-      // ROOM_LIST before deletion
-      console.log("BEFORE:");
-      console.log(Object.keys(ROOM_LIST));
-      delete ROOM_LIST[socket.room.id]
-      // ROOM_LIST after deletion
-      console.log("AFTER:");
-      console.log(Object.keys(ROOM_LIST));
-      io.to(socket_opponent.id).emit('opponent disconnected');
-      io.to(socket_opponent.id).emit('close');
+      delete ROOM_LIST[socket.room.id];
+      opponent_id = getOpponentId(socket);
+      io.to(opponent_id).emit('opponent disconnected');
     }
   });
 
-  socket.on('disconnect', function () {
-    console.log('socket disconnected');
+  socket.on('emit turn', function (data) {
+    console.log('turn:' + data);
+    let data_object = { button: data };
+    opponent_id = getOpponentId(socket);
+    io.to(opponent_id).emit('my turn', data_object);
   });
 });
