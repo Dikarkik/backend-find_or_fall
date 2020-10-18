@@ -65,4 +65,15 @@ io.sockets.on('connection', function (socket) {
     opponent_id = getOpponentId(socket);
     io.to(opponent_id).emit('my turn', data_object);
   });
+
+  socket.on('emit username', function (username) {
+    let data_object = { username: username };
+    opponent_id = getOpponentId(socket);
+    io.to(opponent_id).emit('opponent username', data_object);
+
+    if (socket.id === ROOM_LIST[socket.room.id].player1_socket.id)
+      ROOM_LIST[socket.room.id].player1_username = username;
+    else
+      ROOM_LIST[socket.room.id].player2_username = username;
+  });
 });
