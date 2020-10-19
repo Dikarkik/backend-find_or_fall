@@ -3,7 +3,8 @@ exports.Room = function (player1_socket) {
     id: null,
     player1_socket: player1_socket,
     player2_socket: null,
-    board: null,
+    button_1: null,
+    button_2: null,
   }
   return self;
 };

@@ -1,5 +1,5 @@
 var io = require('socket.io')(3333);
-const generateBoard = require('./generate_board').generateBoard;
+const randomButtons = require('./random_buttons').randomButtons;
 const getOpponentId = require('./get_opponent_id').getOpponentId;
 const Room = require('./room').Room;
 
@@ -22,7 +22,7 @@ io.sockets.on('connection', function (socket) {
     let roomID = `${room.player1_socket.id}-AND-${socket.id}`;
     room.id = roomID;
     room.player2_socket = socket;
-    room.board = generateBoard();
+    randomButtons(room);
 
     // save room in ROOM_LIST
     ROOM_LIST[roomID] = room;
