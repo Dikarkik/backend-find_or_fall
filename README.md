@@ -1,10 +1,23 @@
+![cover](./pictures/cover.png?raw=true "cover")
+
 # backend-find_or_fall
 
 'Find or Fall' is a online, turn-based video game, where two persons must guess which is the button that makes their opponent fall, they have a the same board with eight buttons so it's possible to make yourself fall, the game ends when someone falls.
 
+### Links
+
+- Download link (Playstore):
+https://play.google.com/store/apps/details?id=com.DeamonGames.FindOrFall
+
+- Frontend Github:
+https://github.com/Bhalut/find_or_fall/
+
+- Landing Page:
+https://monicajoa.github.io/findorfalllandingpage/
+
 ### Game server using node.js + socket.io
 
-![diagram](diagram.jpg?raw=true "Diagram")
+![diagram](./pictures/diagram.jpg?raw=true "Diagram")
 
 
 ### Run the server
@@ -19,10 +32,10 @@ $ ./server.js
 ### Test the server connection
 ```
 # install
-sudo npm install -g wscat
+$ sudo npm install -g wscat
 
 # use
-wscat -c "ws://localhost:3333/socket.io/?EIO=3&transport=websocket"
+$ wscat -c "ws://localhost:3333/socket.io/?EIO=3&transport=websocket"
 ```
 
 ### Events it handles
@@ -48,3 +61,11 @@ wscat -c "ws://localhost:3333/socket.io/?EIO=3&transport=websocket"
 - emit('opponent disconnected')
 - emit('my turn', data_object)
 - emit('opponent username', data_object)
+
+### Team
+
+- Nicolas Quinchia, Unity Developer (Gameplay) / Graphic designer.
+- Mónica Ortiz, Backend / UI designer.
+- Diana Quintero, Backend.
+- Eddy Zapata, Unity Developer (Gameplay).
+- Abdel Mejía, Unity Developer.
